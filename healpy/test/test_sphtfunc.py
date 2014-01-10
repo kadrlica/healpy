@@ -36,8 +36,8 @@ class TestSphtFunc(unittest.TestCase):
                                  fwhm=np.radians(fwhm_deg), new=False)
 
     def test_anafast(self):
-        cl = hp.anafast(self.map1[0].filled(), lmax = 1024)
-        self.assertEqual(len(cl), 1025)
+        cl = hp.anafast(self.map1[0].filled(), lmax = 64)
+        self.assertEqual(len(cl), 65)
         np.testing.assert_array_almost_equal(cl, self.cla, decimal=8)
 
     def test_anafast_iqu(self):
