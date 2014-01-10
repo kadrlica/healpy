@@ -22,7 +22,7 @@ class TestSphtFunc(unittest.TestCase):
         self.mask = hp.read_map(os.path.join(self.path, 'data', 'wmap_temperature_analysis_mask_r9_7yr_v4_udgraded32.fits')).astype(np.bool)
         for m in chain(self.map1, self.map2):
             m.mask = np.logical_not(self.mask)
-        self.cla = hp.read_cl(os.path.join(self.path, 'data', 'cl_wmap_fortran.fits'))
+        self.cla = hp.read_cl(os.path.join(self.path, 'data', 'cl_wmap_band_iqumap_r9_7yr_W_v4_udgraded32_II_lmax64_rmmono_3iter.fits'))
         cls = pyfits.open(os.path.join(self.path, 'data',
                                        'cl_iqu_wmap_fortran.fits'))[1].data
         # order of HEALPIX is TB, EB while in healpy is EB, TB
@@ -41,8 +41,8 @@ class TestSphtFunc(unittest.TestCase):
         np.testing.assert_array_almost_equal(cl, self.cla, decimal=8)
 
     def test_anafast_iqu(self):
-        cl = hp.anafast([m.filled() for m in self.map1], lmax = 1024)
-        self.assertEqual(len(cl[0]), 1025)
+        cl = hp.anafast([m.filled() for m in self.map1], lmax = 64)
+        self.assertEqual(len(cl[0]), 65)
         self.assertEqual(len(cl), 6)
         for i in range(6):
             np.testing.assert_array_almost_equal(cl[i], self.cliqu[i], decimal=8)
